@@ -46,19 +46,41 @@
 
         <h1>Penerbit</h1>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="/store" method="post">
             @csrf
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Nama Penerbit</label>
-                <input type="text" name="nama_penerbit" class="form-control" placeholder="nama penerbit">
+                <input type="text" name="nama_penerbit"
+                    class="form-control @error('nama_penerbit') is-invalid @enderror" value="{{ old('nama_penerbit') }}"
+                    placeholder="nama penerbit">
+                @error('nama_penerbit')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Alamat</label>
-                <textarea class="form-control" name="alamat" rows="3"></textarea>
+                <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3">{{ old('alamat') }}</textarea>
+                @if ($errors->has('alamat'))
+                    <span class="text-danger">{{ $errors->first('alamat') }}</span>
+                @endif
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Nomor Telepon</label>
-                <input type="text" class="form-control" placeholder="nomor telepon" name="no_telepon">
+                <input type="text" class="form-control @error('no_telepon') is-invalid @enderror"
+                    placeholder="nomor telepon" name="no_telepon" value="{{ old('no_telepon') }}">
+                @if ($errors->has('no_telepon'))
+                    <span class="text-danger">{{ $errors->first('no_telepon') }}</span>
+                @endif
             </div>
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Simpan</button>

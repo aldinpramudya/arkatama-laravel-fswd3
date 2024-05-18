@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePenerbitRequest;
 use App\Models\Penerbit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PenerbitController extends Controller
 {
@@ -20,8 +22,28 @@ class PenerbitController extends Controller
         return view('store');
     }
 
-    public function store(Request $request) 
+    public function store(StorePenerbitRequest $request) 
     {
+        // Menggunakan Controller Request
+        // $validasi = $request->validate([
+            // 'nama_penerbit' => 'required|string|max:255',
+            // 'alamat' => 'required|string',
+            // 'no_telepon' => 'required|numeric|max_digits:13'
+        // ]);
+
+        // Menggunakan Validator
+        // $validasi = Validator::make($request->all(), [
+        //     'nama_penerbit' => 'required|string|max:255',
+        //     'alamat' => 'required|string',
+        //     'no_telepon' => 'required|numeric|max_digits:13'
+        // ]);
+
+        // if ($validasi->fails()) {
+        //     dd($validasi->errors());
+        // }
+
+        dd('proses simpan');
+
         Penerbit::create([
             'nama_penerbit' => $request->nama_penerbit,
             'alamat' => $request->alamat,
@@ -31,8 +53,9 @@ class PenerbitController extends Controller
         return redirect('/')->with('status', 'Data Berhasil Disimpan');
     }
 
-    public function ubah($id) 
+    public function ubah($id, Request $request) 
     {
+        // dd($request->url());
         $penerbit = Penerbit::find($id);
         return view('update', compact('penerbit'));
     }
